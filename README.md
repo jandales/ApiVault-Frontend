@@ -28,6 +28,13 @@ npm run dev        # http://localhost:5173
 
 Point the proxy at another API with `API_PROXY_TARGET=http://localhost:5150 npm run dev`.
 
+## Deploy (Railway)
+
+The `Dockerfile` builds the app and serves it with Caddy (`Caddyfile`), which also proxies `/api/*` to the backend
+over Railway's private network, so the browser uses a single origin. Set `API_UPSTREAM`
+(e.g. `http://${{api.RAILWAY_PRIVATE_DOMAIN}}:8080`) and generate a public domain for this service.
+Full steps: [DEPLOY.md in the backend repo](https://github.com/jandales/ApiVault/blob/master/DEPLOY.md).
+
 ## Scripts
 
 | Command | Purpose |

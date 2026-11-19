@@ -3,7 +3,7 @@ import { deriveAccountKeysFromJson, type NewAccountMaterial } from '../../securi
 import { keyManager } from '../../security/key-manager'
 import { unwrapWithKek } from '../../security/vault-crypto'
 import { ApiError, api, post, refreshSession, setAccessToken, type AuthResponse } from '../../services/api/client'
-import { prelogin, registerAccount } from '../../services/api/auth'
+import { googleRegister, prelogin, registerAccount } from '../../services/api/auth'
 import { getMyVaultKeys } from '../../services/api/vaults'
 
 export interface User {
@@ -24,6 +24,10 @@ interface AuthContextValue {
   logout(): Promise<void>
   /** Re-reads the signed-in user (e.g. after email verification). */
   refreshUser(): Promise<void>
+  /** After Google sign-in set the refresh cookie: pick up that session. Secrets stay locked until the password is entered. */
+  adoptSession(): Promise<void>
+  /** New Google user: create the account with keys made in this browser, then sign in and unlock. */
+  completeGoogleRegistration(ticket: string, material: NewAccountMaterial): Promise<void>
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null)
@@ -83,6 +87,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const unlock = useCallback((password: string) => unlockVault(password), [])
 
+  const adoptSession = useCallback(async () => {
+    if (!(await refreshSession())) throw new Error('No session')
+    setUser(await api<User>('/auth/me'))
+  }, [])
+
+  const completeGoogleRegistration = useCallback(async (ticket: string, m: NewAccountMaterial) => {
+    const res = await googleRegister(ticket, m)
+    setAccessToken(res.accessToken)
+    keyManager.setVek(m.vault.vaultId, m.vault.vek)
+    setUser(res.user)
+  }, [])
+
   const refreshUser = useCallback(async () => {
     try {
       setUser(await api<User>('/auth/me'))
@@ -102,8 +118,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const value = useMemo(
-    () => ({ user, loading, login, completeRegistration, unlock, logout, refreshUser }),
-    [user, loading, login, completeRegistration, unlock, logout, refreshUser],
+    () => ({ user, loading, login, completeRegistration, unlock, logout, refreshUser, adoptSession, completeGoogleRegistration }),
+    [user, loading, login, completeRegistration, unlock, logout, refreshUser, adoptSession, completeGoogleRegistration],
   )
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }

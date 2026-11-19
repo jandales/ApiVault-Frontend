@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { ForgotPasswordPage, LoginPage, RegisterPage, VerifyEmailPage } from '../../features/auth/AuthPages'
+import { GoogleCallbackPage } from '../../features/auth/GoogleSignIn'
 import { OverviewPage } from '../../features/overview/OverviewPage'
 import {
   SecretCreatePage,
@@ -22,6 +23,7 @@ export function AppRoutes() {
       {/* Reachable signed in or out: the link arrives by email and may be opened in an active session. */}
       <Route element={<OpenAuthLayout />}>
         <Route path="/verify-email" element={<VerifyEmailPage />} />
+        <Route path="/auth/google" element={<GoogleCallbackPage />} />
       </Route>
       <Route element={<AppLayout />}>
         <Route path="/dashboard" element={<OverviewPage />} />
