@@ -6,6 +6,7 @@ import { MIN_PASSWORD_LENGTH, createAccountMaterial, rekeyWithRecoveryKey, type 
 import { VaultUnlockError } from '../../security/vault-crypto'
 import { ApiError, post } from '../../services/api/client'
 import { getRecoveryMaterial, resetPasswordErasingSecrets, resetPasswordKeepingSecrets } from '../../services/api/auth'
+import { GoogleButton } from './GoogleSignIn'
 import { RecoveryKeyStep } from './RecoveryKeyStep'
 
 function errorText(e: unknown): string {
@@ -64,6 +65,7 @@ export function LoginPage() {
     <form onSubmit={(e) => void onSubmit(e)}>
       <h2>Log in</h2>
       <p className="muted">One password opens your account and decrypts your secrets, in this browser only.</p>
+      <GoogleButton />
       <label>Email<input name="email" type="email" autoComplete="username" required autoFocus /></label>
       <label>Password<input name="password" type="password" autoComplete="current-password" required /></label>
       {error && <p className="error" role="alert">{error}</p>}
@@ -142,6 +144,7 @@ export function RegisterPage() {
     <form onSubmit={(e) => void onSubmit(e)}>
       <h2>Create account</h2>
       <p className="muted">Your password encrypts your secrets. It never leaves this browser, so choose one you will remember.</p>
+      <GoogleButton />
       <label>Email<input name="email" type="email" autoComplete="username" required autoFocus /></label>
       <NewPasswordFields />
       {error && <p className="error" role="alert">{error}</p>}

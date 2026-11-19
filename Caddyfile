@@ -1,0 +1,44 @@
+{
+	admin off
+	auto_https off
+	servers {
+		# Only Railway's edge can reach this service, so trust its X-Forwarded-* headers and pass the
+		# real client IP on to the API (used for rate limiting).
+		trusted_proxies static 0.0.0.0/0 ::/0
+	}
+}
+
+:{$PORT:8080} {
+	encode zstd gzip
+
+	# API: same origin for the browser, forwarded to the backend on the private network.
+	handle /api/* {
+		reverse_proxy {$API_UPSTREAM}
+	}
+
+	# Hashed build assets can be cached forever.
+	handle /assets/* {
+		root * /srv
+		header Cache-Control "public, max-age=31536000, immutable"
+		file_server
+	}
+
+	# Single-page app: unknown paths serve index.html (never cached, so deploys take effect).
+	handle {
+		root * /srv
+		try_files {path} /index.html
+		header Cache-Control "no-cache"
+		file_server
+	}
+
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "DENY"
+		Referrer-Policy "no-referrer"
+		Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
+		# The full CSP is in index.html (build); this adds the parts only a header can set.
+		Content-Security-Policy "frame-ancestors 'none'"
+		-Server
+	}
+}

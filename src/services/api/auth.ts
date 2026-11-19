@@ -1,7 +1,14 @@
 import type { NewAccountMaterial, RekeyMaterial } from '../../security/account-crypto'
 import { fromBase64, toBase64 } from '../../security/encoding'
-import { post } from './client'
+import { api, post, type AuthResponse } from './client'
 import { vaultToWire, wrapperFromWire, wrapperToWire, type WrapperDto } from './vaults'
+
+/** Which sign-in methods the server has configured. */
+export const getProviders = () => api<{ google: boolean }>('/auth/providers')
+
+/** Finishes a Google sign-up: the signed ticket proves the Google identity; keys were created in this browser. */
+export const googleRegister = (ticket: string, m: NewAccountMaterial) =>
+  post<AuthResponse>('/auth/google/register', { ticket, password: m.authKey, vault: vaultToWire(m.vault) })
 
 /** KDF salt and parameters for an email (a stable decoy for unknown emails). */
 export async function prelogin(email: string) {

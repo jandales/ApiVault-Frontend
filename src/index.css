@@ -461,6 +461,10 @@ label.check input { width: 16px; height: 16px; accent-color: var(--accent); }
 .auth-card label input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
 .auth-card label.check { flex-direction: row; align-items: center; gap: 8px; font-weight: 500; color: var(--text); }
 .auth-links { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; font-size: 13px; }
+.btn.google { gap: 10px; height: 40px; background: #fff; color: #1f1f1f; border-color: #dadce0; font-weight: 600; }
+.btn.google:hover { background: #f8f9fa; }
+.divider { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
+.divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 .auth-foot { max-width: 400px; text-align: center; font-size: 12px; color: var(--muted); }
 
 /* ============================================================ Responsive */
