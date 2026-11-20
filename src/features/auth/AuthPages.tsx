@@ -190,7 +190,7 @@ export function VerifyEmailPage() {
       {state === 'ok' ? (
         <>
           <p className="notice">Your email address <strong>{email}</strong> is verified.</p>
-          <Link to={user ? '/secrets' : '/login'} className="btn primary block">{user ? 'Continue to API Vault' : 'Log in'}</Link>
+          <Link to={user ? '/secrets' : '/login'} className="btn primary block">{user ? 'Continue to Aurex' : 'Log in'}</Link>
         </>
       ) : (
         <>

@@ -1,6 +1,7 @@
-# ApiVault-Frontend
+# Aurex Frontend
 
-React + TypeScript + Vite frontend for **API Vault**, a personal zero-knowledge secrets manager.
+React + TypeScript + Vite frontend for **Aurex**, a zero-knowledge credential management platform
+(*Trust starts with control.*). Formerly API Vault; repository and code names keep the old name.
 Backend: [jandales/ApiVault](https://github.com/jandales/ApiVault).
 
 ## Zero-knowledge model

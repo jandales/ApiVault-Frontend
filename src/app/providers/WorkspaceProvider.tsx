@@ -39,7 +39,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     listVaults()
       .then((v) => {
         if (cancelled) return
-        if (v.length === 0) setVaultError('This account has no encryption keys. It may have been created with an older version of API Vault.')
+        if (v.length === 0) setVaultError('This account has no encryption keys. It may have been created with an older version of Aurex.')
         else setVault(v[0])
       })
       .catch((e: unknown) => {
