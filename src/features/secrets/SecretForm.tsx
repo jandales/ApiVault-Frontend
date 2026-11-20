@@ -5,6 +5,7 @@ import { Icon } from '../../components/Icon'
 import { ItemIcon } from '../../components/ItemIcon'
 import { typeIcon } from '../../components/icon-utils'
 import {
+  MASKED_FIELDS,
   PAYLOAD_FIELDS,
   PAYLOAD_LABELS,
   SECRET_TYPES,
@@ -42,7 +43,7 @@ const EMPTY_META: SecretMetadata = {
   tagIds: [],
 }
 
-const MASKED: (keyof SecretPayload)[] = ['token', 'password']
+const MASKED = MASKED_FIELDS
 
 /** yyyy-mm-dd from an ISO date, for <input type="date">. */
 const toDateInput = (iso: string | null) => (iso ? iso.slice(0, 10) : '')
@@ -53,6 +54,8 @@ const PLACEHOLDERS: Partial<Record<keyof SecretPayload, string>> = {
   token: 'sk_live_…',
   username: 'name@example.com',
   url: 'https://',
+  clientId: '1234567890-abc123.apps.googleusercontent.com',
+  clientSecret: 'GOCSPX-…',
 }
 
 export function SecretForm({ title, initialMeta, initialPayload, submitLabel, busy, error, cancelTo, header, onSubmit }: Props) {
@@ -141,7 +144,7 @@ export function SecretForm({ title, initialMeta, initialPayload, submitLabel, bu
               ) : (
                 <div className="input-wrap">
                   <input
-                    className={`input ${MASKED.includes(k) ? 'mono' : ''}`}
+                    className={`input ${MASKED.includes(k) || k === 'clientId' ? 'mono' : ''}`}
                     aria-label={PAYLOAD_LABELS[k]}
                     type={MASKED.includes(k) && !shown.has(k) ? 'password' : 'text'}
                     value={payload[k] ?? ''}
