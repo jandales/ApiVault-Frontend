@@ -76,7 +76,7 @@ export function OverviewPage() {
         <Link to="/secrets/create" className="btn primary"><Icon name="plus" size={16} />New Item</Link>
       </div>
       {error ? <p className="error" role="alert">Could not load your items. Is the API running?</p> : stats?.total === 0 ? (
-        <EmptyState icon="key" title="Welcome to API Vault">
+        <EmptyState icon="key" title="Welcome to Aurex">
           <p className="muted">Store your first API key, password or secure note. It's encrypted in this browser before it's saved.</p>
           <Link to="/secrets/create" className="btn primary"><Icon name="plus" size={16} />Add your first item</Link>
         </EmptyState>

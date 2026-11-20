@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { AurexMark, Brand } from '../../components/Brand'
+import { BRAND } from '../../components/brand-copy'
 import { EmptyState, Menu } from '../../components/Controls'
 import { Icon, type IconName } from '../../components/Icon'
 import { LockScreen } from '../../features/auth/LockScreen'
@@ -9,7 +11,7 @@ import { post } from '../../services/api/client'
 import { useAuth } from '../providers/AuthProvider'
 import { WorkspaceProvider, useWorkspace } from '../providers/WorkspaceProvider'
 
-const Splash = () => <div className="splash"><span className="logo"><Icon name="key" size={22} /></span></div>
+const Splash = () => <div className="splash"><AurexMark size={44} /></div>
 
 export function AppLayout() {
   const { user, loading } = useAuth()
@@ -90,13 +92,14 @@ function Shell() {
   return (
     <div className="app">
       <aside className={`sidebar ${open ? 'open' : ''}`} aria-label="Navigation">
+        <div className="sidebar-brand"><Brand size={26} /></div>
         <Menu
           label="Account"
           trigger={
             <span className="account">
               <span className="avatar">{initial}</span>
               <span className="account-text">
-                <strong>API Vault</strong>
+                <strong>My account</strong>
                 <span>{user?.email}</span>
               </span>
               <Icon name="chevronDown" size={16} />
@@ -146,7 +149,7 @@ function Shell() {
       <div className="main">
         <header className="mobile-bar">
           <button type="button" className="icon-btn" onClick={() => setOpen(true)} aria-label="Open navigation"><Icon name="menu" /></button>
-          <span className="brand-sm"><span className="logo sm"><Icon name="key" size={14} /></span>API Vault</span>
+          <span className="brand-sm"><Brand size={24} /></span>
           <span className="spacer" />
           <button type="button" className="icon-btn" onClick={() => keyManager.lockAll()} aria-label="Lock"><Icon name="lock" /></button>
         </header>
@@ -192,6 +195,25 @@ function VerifyEmailBanner({ email }: { email: string }) {
   )
 }
 
+function AuthBrandHeader() {
+  return (
+    <div className="brand">
+      <Brand size={40} />
+      <span className="brand-category">{BRAND.category}</span>
+      <span className="brand-tagline">{BRAND.tagline}</span>
+    </div>
+  )
+}
+
+function AuthFooter() {
+  return (
+    <div className="auth-foot">
+      <p className="auth-promise">{BRAND.promise}</p>
+      <p>Zero-knowledge: credentials are encrypted in your browser before they are stored.</p>
+    </div>
+  )
+}
+
 /** Auth-style card that works whether or not someone is signed in (e.g. the email verification link). */
 export function OpenAuthLayout() {
   const { loading } = useAuth()
@@ -199,10 +221,7 @@ export function OpenAuthLayout() {
   return (
     <div className="auth">
       <div className="auth-card">
-        <div className="brand">
-          <span className="logo"><Icon name="key" size={20} /></span>
-          <span>API Vault</span>
-        </div>
+        <AuthBrandHeader />
         <Outlet />
       </div>
     </div>
@@ -216,13 +235,10 @@ export function PublicLayout() {
   return (
     <div className="auth">
       <div className="auth-card">
-        <div className="brand">
-          <span className="logo"><Icon name="key" size={20} /></span>
-          <span>API Vault</span>
-        </div>
+        <AuthBrandHeader />
         <Outlet />
       </div>
-      <p className="auth-foot">Zero-knowledge: your secrets are encrypted in this browser before they are stored.</p>
+      <AuthFooter />
     </div>
   )
 }

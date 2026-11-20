@@ -24,12 +24,12 @@ export function RecoveryKeyStep({
 
   function download() {
     const text =
-      `API Vault recovery key\nAccount: ${email}\n\n${recoveryKey}\n\n` +
+      `Aurex recovery key\nAccount: ${email}\n\n${recoveryKey}\n\n` +
       'If you forget your password, this key is the only way to keep your secrets.\nStore it somewhere safe and offline. Anyone with this key and access to your email can reset your password.\n'
     const url = URL.createObjectURL(new Blob([text], { type: 'text/plain' }))
     const a = document.createElement('a')
     a.href = url
-    a.download = 'api-vault-recovery-key.txt'
+    a.download = 'aurex-recovery-key.txt'
     a.click()
     URL.revokeObjectURL(url)
   }
