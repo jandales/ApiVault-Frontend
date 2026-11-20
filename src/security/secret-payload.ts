@@ -8,14 +8,18 @@ export interface SecretPayload {
   token?: string
   url?: string
   notes?: string
+  /** OAuth client: the public identifier. Encrypted too, since it reveals which apps you integrate. */
+  clientId?: string
+  clientSecret?: string
 }
 
-export type SecretType = 'ApiKey' | 'Password' | 'SecureNote'
+export type SecretType = 'ApiKey' | 'Password' | 'SecureNote' | 'OAuthClient'
 
 export const SECRET_TYPES: { value: SecretType; label: string }[] = [
   { value: 'ApiKey', label: 'API Key' },
   { value: 'Password', label: 'Password' },
   { value: 'SecureNote', label: 'Secure Note' },
+  { value: 'OAuthClient', label: 'OAuth Client' },
 ]
 
 export const secretTypeLabel = (t: string) => SECRET_TYPES.find((x) => x.value === t)?.label ?? t
@@ -25,6 +29,7 @@ export const PAYLOAD_FIELDS: Record<SecretType, (keyof SecretPayload)[]> = {
   ApiKey: ['token', 'username', 'url', 'notes'],
   Password: ['username', 'password', 'url', 'notes'],
   SecureNote: ['notes'],
+  OAuthClient: ['clientId', 'clientSecret', 'url', 'notes'],
 }
 
 export const PAYLOAD_LABELS: Record<keyof SecretPayload, string> = {
@@ -33,9 +38,14 @@ export const PAYLOAD_LABELS: Record<keyof SecretPayload, string> = {
   password: 'Password',
   url: 'URL',
   notes: 'Notes',
+  clientId: 'Client ID',
+  clientSecret: 'Client Secret',
 }
 
-const ORDER: (keyof SecretPayload)[] = ['token', 'username', 'password', 'url', 'notes']
+/** Fields shown as dots until revealed (inputs and details). */
+export const MASKED_FIELDS: (keyof SecretPayload)[] = ['token', 'password', 'clientSecret']
+
+const ORDER: (keyof SecretPayload)[] = ['token', 'clientId', 'clientSecret', 'username', 'password', 'url', 'notes']
 
 /** Drops empty fields and fixes key order so two payloads can be compared. */
 export function cleanPayload(p: SecretPayload, type?: SecretType): SecretPayload {

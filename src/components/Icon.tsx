@@ -30,6 +30,7 @@ const PATHS = {
   external: <path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" />,
   x: <path d="M6 6l12 12M18 6 6 18" />,
   download: <path d="M12 3v12M7 10l5 5 5-5M4 21h16" />,
+  idcard: <><rect x="3" y="5" width="18" height="14" rx="2.5" /><circle cx="8.5" cy="11" r="2" /><path d="M5.5 16c.6-1.6 1.7-2.4 3-2.4s2.4.8 3 2.4M14 10h4M14 13.5h3" /></>,
 } satisfies Record<string, ReactNode>
 
 export type IconName = keyof typeof PATHS

@@ -7,6 +7,7 @@ import { ItemIcon } from '../../components/ItemIcon'
 import { useUnlocked } from '../../hooks/useVaultKeys'
 import { keyManager } from '../../security/key-manager'
 import {
+  MASKED_FIELDS,
   PAYLOAD_FIELDS,
   PAYLOAD_LABELS,
   SECRET_TYPES,
@@ -34,7 +35,7 @@ import {
 import { SecretForm, type SecretFormValues } from './SecretForm'
 
 const REVEAL_MS = 20_000
-const MASKED: (keyof SecretPayload)[] = ['token', 'password', 'notes']
+const MASKED: (keyof SecretPayload)[] = [...MASKED_FIELDS, 'notes']
 
 const errorText = (e: unknown, fallback: string) =>
   e instanceof ApiError ? [e.message, ...e.details].join(' ') : fallback
@@ -254,7 +255,7 @@ function PayloadFields({ type, payload }: { type: string; payload: SecretPayload
             ) : k === 'url' ? (
               <SafeLink url={value} />
             ) : (
-              <span className={k === 'notes' ? 'pre' : k === 'token' || k === 'password' ? 'mono' : ''}>{value}</span>
+              <span className={k === 'notes' ? 'pre' : MASKED_FIELDS.includes(k) || k === 'clientId' ? 'mono' : ''}>{value}</span>
             )}
           </FieldRow>
         )

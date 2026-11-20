@@ -122,6 +122,7 @@ function Shell() {
           <NavItem to="/secrets?type=ApiKey" icon="key" label="API Keys" active={key === 'type:ApiKey'} />
           <NavItem to="/secrets?type=Password" icon="asterisk" label="Passwords" active={key === 'type:Password'} />
           <NavItem to="/secrets?type=SecureNote" icon="note" label="Secure Notes" active={key === 'type:SecureNote'} />
+          <NavItem to="/secrets?type=OAuthClient" icon="idcard" label="OAuth Clients" active={key === 'type:OAuthClient'} />
         </nav>
 
         <div className="nav-heading">
